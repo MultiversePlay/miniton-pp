@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Detail</title>
+		<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script src="js/modernizr.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script type="text/javascript">
+			function getQueryString(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+				var r = window.location.search.substr(1).match(reg);
+				var context = "";
+				if (r != null)
+					context = decodeURIComponent(r[2]);
+				reg = null;
+				r = null;
+				return context == null || context == "" || context == "undefined" ? "" : context;
+			}
+			
+			$(window).load(function() {
+				$.ajax({ 
+					url: '/miniton/game/get',
+					type: 'GET',
+					data: 'id=' + getQueryString('id'),
+					dataType: 'json',
+					success: function(res, status, jqxhr){
+						$('#logo')[0].src = '.' + res[6];
+						$('#desc')[0].innerHTML = res[2];
+						$('#type')[0].innerHTML = res[3];
+						$('#tags')[0].innerHTML = res[9];
+						$('#name')[0].innerHTML = res[1];
+						$('#detail')[0].innerHTML = res[5];
+						var html = ''
+						res[8].split(',').forEach(el=>{
+							html += '<div class="col_1_of_3 span_1_of_3">' +
+									'<div class="css3">' +
+									'<img src=".' + el + '" alt="css3" title="Flats">' +
+									'</div></div>'
+						})
+						$('#preview')[0].innerHTML = html;
+					},
+					error: function(jqxhr, status, error){
+						
+					}
+				})
+			});
+		</script>
+	</head>
+	<body>
+		<div class="wrap">		
+			<div class="content-bottom">
+				<div class="section group example">
+					<div class="col_1_of_2 span_1_of_2">
+						<ul class="list2">
+							<li>
+								<figure><img id='logo' src="imgs/Onet/image.png" alt=""></figure>
+								<div class="extra-wrap">
+									<h4 id='desc'>ellentesque sed dolor. Aliquam congue fermentum</h4>
+									<p class="comment"><a href="#" id='type'>Oct 3rd, 2013</a><span>|</span><a href="#" id='tags'></a></p>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+				
+			<div class="about-top">
+				<div class="project-top-patination">
+					<ul>
+						<li><a href="index.html">Detail</a></li>
+						<li><p>Ranking</p></li>
+						<li><p>Record</p></li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="col_1_of_2 span_1_of_2"><h3>Preview</h3></div>
+			<div id='preview'>
+			</div>
+						
+			<div class="col_1_of_2 span_1_of_2">
+			   <h3>About this game</h3>
+			   <p class="comment"><a href="#" id='name'>Oct 5th, 2013</a></p>
+			   <p id='detail'>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+			</div>
+		</div>
+	</body>
+</html>

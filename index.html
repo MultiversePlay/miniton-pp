@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>MiniTon</title>
+		<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" href="css/flexslider.css" type="text/css" media="all" />
+		<script src="js/modernizr.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script defer src="js/jquery.flexslider.js"></script>
+		<script src="https://telegram.org/js/telegram-web-app.js"></script>
+		<script type="text/javascript">
+			function recommend(){
+				$.ajax({
+					url: '/miniton/game/list',
+					type: 'GET',
+					data: 'type=4',
+					dataType: 'json',
+					success: function(res, status, jqxhr){
+						var html = ''
+						res.forEach(el=>{
+							html += '<li><a href="./detail.html?id=' + el[0] + '"><img src=".' + el[7] + '" alt="" /></a></li>'
+						})
+						$('#recommend')[0].innerHTML = html;
+				
+						$('.flexslider').flexslider({
+							animation: "slide",
+							start: function(slider) {
+								$('body').removeClass('loading');
+							}
+						});
+					},
+					error: function(jqxhr, status, error){
+						
+					}
+				})
+			}
+			$(window).load(function() {
+				//window.Telegram.WebApp.initData
+				if(window.Telegram && window.Telegram.WebApp.initDataUnsafe.user){
+					//id、is_bot、first_name、last_name、language_code
+                                        if(window.Telegram.WebApp.initDataUnsafe.user.id){
+                                            $('#id')[0].innerHTML = window.Telegram.WebApp.initDataUnsafe.user.id;
+                                        }
+                                        if(window.Telegram.WebApp.initDataUnsafe.user.photo_url){
+					    $('#logo')[0].src = window.Telegram.WebApp.initDataUnsafe.user.photo_url;
+                                        }
+					$('#nickname')[0].innerHTML = window.Telegram.WebApp.initDataUnsafe.user.username;
+				}
+				
+				$.ajax({ 
+					url: '/miniton/game/list',
+					type: 'GET',
+					data: 'type=1',
+					dataType: 'json',
+					success: function(res, status, jqxhr){
+						var html = ''
+						res.forEach(el=>{
+							html += '<div class="col_1_of_3 span_1_of_3">' +
+									'<div class="css3">' +
+									'<a href="./detail.html?id=' + el[0] + '"><img src=".' + el[7] + '" alt="css3" title="Flats"></a>' +
+									'</div></div>'
+						})
+						$('#recent')[0].innerHTML = html;
+					},
+					error: function(jqxhr, status, error){
+						
+					}
+				})
+				
+				$.ajax({ 
+					url: '/miniton/game/list',
+					type: 'GET',
+					data: 'type=2',
+					dataType: 'json',
+					success: function(res, status, jqxhr){
+						var html = ''
+						res.forEach(el=>{
+							html += '<li><a href="./detail.html?id=' + el[0] + '"><img src=".' + el[7] + '" alt="" /></a></li>'
+						})
+						$('#popular')[0].innerHTML = html;
+						
+						recommend();
+					},
+					error: function(jqxhr, status, error){
+						
+					}
+				})
+				
+				$.ajax({ 
+					url: '/miniton/game/list',
+					type: 'GET',
+					data: 'type=3',
+					dataType: 'json',
+					success: function(res, status, jqxhr){
+						var html = ''
+						res.forEach(el=>{
+							html += '<li><figure><a href="./detail.html?id=' + el[0] + '"><img src=".' + el[7] + '" alt=""></a></figure>' +
+								    '<div class="extra-wrap">' +
+									'<h4>' + el[2] + '</h4>' +
+									'<p class="comment"><a href="./detail.html?id=' + el[0] + '">' + el[1] + '</a><span>|</span>' + el[3] + '</p>' +
+									'</div></li>'
+						})
+						$('#playing')[0].innerHTML = html;
+					},
+					error: function(jqxhr, status, error){
+						
+					}
+				})
+			});
+		</script>
+	</head>
+	<body>
+		<div class="header">
+			<div class="header-top">
+				<div class="wrap">
+					<div class="logo">
+						<a href="index.html"><img style="border-radius: 50%; width: 64px; height: 64px;" id="logo" src="imgs/logo.png" alt="" /></a>
+					</div>
+					<ul class="follow_icon">
+						<li><a href="#" id="id"><img src="imgs/g+.png" alt=""></a></li>
+					</ul>
+
+					<ul class="follow_icon">
+						<li><a href="#">Welcome , enjoy your game.</a><br></li>
+						<li style="padding-bottom: 10px;"><a href="#" id="nickname">Roykay_MVP</a></li>
+					</ul>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="wrap">
+			<h3>Recent Play</h3>
+			<div class="content-top" id="recent">
+				<div class="col_1_of_3 span_1_of_3">
+					<div class="css3">
+						<img src="imgs/Dragon/image_2.png" alt="css3" title="Flats">
+					</div>
+				</div>
+				<div class="col_1_of_3 span_1_of_3">
+					<div class="css3">
+						<img src="imgs/Falling/image_2.png" alt="css3" title="Flats">
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			
+			<h3>Popular</h3>
+			<div class="banner">
+				<div class="flexslider">
+					<ul class="slides" id="popular">
+						<li><img src="imgs/Ball/image_1.png" alt="" /></li>
+						<li><img src="imgs/Candy/image_1.png" alt="" /></li>
+						<li><img src="imgs/Darts/image_1.png" alt="" /></li>
+						<li><img src="imgs/Magic/image_1.png" alt="" /></li>
+					</ul>
+				</div>
+			</div>
+		
+			<h3>Friends Are Playing</h3>
+			<div class="content-bottom">
+				<div class="section group example">
+					<div class="col_1_of_2 span_1_of_2">
+						<ul class="list2" id="playing">
+							<li>
+								<figure><img src="imgs/Dragon/image.png" alt=""></figure>
+								<div class="extra-wrap">
+									<h4>Fusce euismod consequat ante. Lorem ipsum dolor sit amet</h4>
+									<p class="comment"><a href="#">Oct 3rd, 2013</a><span>|</span><a href="#">1</a></p>
+								</div>
+							</li>
+							<li>
+								<figure><img src="imgs/Onet/image.png" alt=""></figure>
+								<div class="extra-wrap">
+									<h4>ellentesque sed dolor. Aliquam congue fermentum</h4>
+									<p class="comment"><a href="#">Oct 3rd, 2013</a><span>|</span><a href="#">12</a></p>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			
+			<h3>Recommended For You</h3>
+			<div class="banner">
+				<div class="flexslider">
+					<ul class="slides" id="recommend">
+						<li><img src="imgs/QH/image_1.png" alt="" /></li>
+						<li><img src="imgs/UNO/image_1.png" alt="" /></li>
+						<li><img src="imgs/Rival/image_1.png" alt="" /></li>
+						<li><img src="imgs/Marble/image_1.png" alt="" /></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
